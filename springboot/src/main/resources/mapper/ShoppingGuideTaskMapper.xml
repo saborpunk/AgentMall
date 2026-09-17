@@ -1,0 +1,76 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ShoppingGuideTaskMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ShoppingGuideTask">
+        select sgt.*, u.name as user_name, p.name as product_name
+        from shopping_guide_task sgt
+        left join `user` u on sgt.user_id = u.id
+        left join product p on sgt.product_id = p.id
+        <where>
+            <if test="taskNo != null"> and sgt.task_no like concat('%', #{taskNo}, '%')</if>
+            <if test="userId != null"> and sgt.user_id = #{userId}</if>
+            <if test="demandText != null"> and sgt.demand_text like concat('%', #{demandText}, '%')</if>
+            <if test="status != null"> and sgt.status = #{status}</if>
+        </where>
+        order by sgt.id desc
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.ShoppingGuideTask" useGeneratedKeys="true" keyProperty="id">
+        insert into shopping_guide_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="taskNo != null">task_no,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="demandText != null">demand_text,</if>
+            <if test="budgetAmount != null">budget_amount,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="status != null">status,</if>
+            <if test="matchedProductIds != null">matched_product_ids,</if>
+            <if test="recommendationResult != null">recommendation_result,</if>
+            <if test="executeMessage != null">execute_message,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="executeTime != null">execute_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="taskNo != null">#{taskNo},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="demandText != null">#{demandText},</if>
+            <if test="budgetAmount != null">#{budgetAmount},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="matchedProductIds != null">#{matchedProductIds},</if>
+            <if test="recommendationResult != null">#{recommendationResult},</if>
+            <if test="executeMessage != null">#{executeMessage},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="executeTime != null">#{executeTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.ShoppingGuideTask">
+        update shopping_guide_task
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="demandText != null">demand_text = #{demandText},</if>
+            <if test="budgetAmount != null">budget_amount = #{budgetAmount},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="matchedProductIds != null">matched_product_ids = #{matchedProductIds},</if>
+            <if test="recommendationResult != null">recommendation_result = #{recommendationResult},</if>
+            <if test="executeMessage != null">execute_message = #{executeMessage},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="executeTime != null">execute_time = #{executeTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from shopping_guide_task
+        where id = #{id}
+    </delete>
+
+</mapper>

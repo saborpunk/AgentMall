@@ -1,0 +1,93 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ProductMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Product">
+        select p.*, c.name as category_name, b.name as brand_name
+        from product p
+        left join product_category c on p.category_id = c.id
+        left join product_brand b on p.brand_id = b.id
+        <where>
+            <!-- 前台商品详情页按 id 精确取一条商品 -->
+            <if test="id != null"> and p.id = #{id}</if>
+            <if test="productNo != null"> and p.product_no like concat('%', #{productNo}, '%')</if>
+            <if test="name != null"> and p.name like concat('%', #{name}, '%')</if>
+            <if test="categoryId != null"> and p.category_id = #{categoryId}</if>
+            <if test="brandId != null"> and p.brand_id = #{brandId}</if>
+            <if test="status != null"> and p.status = #{status}</if>
+            <if test="isRecommend != null"> and p.is_recommend = #{isRecommend}</if>
+        </where>
+        order by p.sort asc, p.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from product
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Product" useGeneratedKeys="true">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="productNo != null">product_no,</if>
+            <if test="name != null">name,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="brandId != null">brand_id,</if>
+            <if test="coverImage != null">cover_image,</if>
+            <if test="albumImages != null">album_images,</if>
+            <if test="price != null">price,</if>
+            <if test="originalPrice != null">original_price,</if>
+            <if test="stockQuantity != null">stock_quantity,</if>
+            <if test="sellingPoint != null">selling_point,</if>
+            <if test="tags != null">tags,</if>
+            <if test="isRecommend != null">is_recommend,</if>
+            <if test="status != null">status,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="productNo != null">#{productNo},</if>
+            <if test="name != null">#{name},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="brandId != null">#{brandId},</if>
+            <if test="coverImage != null">#{coverImage},</if>
+            <if test="albumImages != null">#{albumImages},</if>
+            <if test="price != null">#{price},</if>
+            <if test="originalPrice != null">#{originalPrice},</if>
+            <if test="stockQuantity != null">#{stockQuantity},</if>
+            <if test="sellingPoint != null">#{sellingPoint},</if>
+            <if test="tags != null">#{tags},</if>
+            <if test="isRecommend != null">#{isRecommend},</if>
+            <if test="status != null">#{status},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Product">
+        update product
+        <set>
+            <if test="productNo != null">product_no = #{productNo},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="brandId != null">brand_id = #{brandId},</if>
+            <if test="coverImage != null">cover_image = #{coverImage},</if>
+            <if test="albumImages != null">album_images = #{albumImages},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="originalPrice != null">original_price = #{originalPrice},</if>
+            <if test="stockQuantity != null">stock_quantity = #{stockQuantity},</if>
+            <if test="sellingPoint != null">selling_point = #{sellingPoint},</if>
+            <if test="tags != null">tags = #{tags},</if>
+            <if test="isRecommend != null">is_recommend = #{isRecommend},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

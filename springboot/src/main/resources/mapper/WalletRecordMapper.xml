@@ -1,0 +1,30 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.WalletRecordMapper">
+
+    <insert id="insert" parameterType="com.example.entity.WalletRecord" useGeneratedKeys="true">
+        insert into wallet_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="type != null">type,</if>
+            <if test="amount != null">amount,</if>
+            <if test="balanceAfter != null">balance_after,</if>
+            <if test="businessNo != null">business_no,</if>
+            <if test="remark != null">remark,</if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="balanceAfter != null">#{balanceAfter},</if>
+            <if test="businessNo != null">#{businessNo},</if>
+            <if test="remark != null">#{remark},</if>
+            now(),
+        </trim>
+    </insert>
+
+</mapper>

@@ -1,0 +1,90 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.AgentStepMapper">
+
+    <select id="selectAll" resultType="com.example.entity.AgentStep">
+        select ast.*, ar.run_no as run_no, sgt.task_no as task_no
+        from agent_step ast
+        left join agent_run ar on ast.run_id = ar.id
+        left join shopping_guide_task sgt on ar.task_id = sgt.id
+        <where>
+            <if test="runId != null"> and ast.run_id = #{runId}</if>
+            <if test="runNo != null"> and ar.run_no like concat('%', #{runNo}, '%')</if>
+            <if test="taskNo != null"> and sgt.task_no like concat('%', #{taskNo}, '%')</if>
+            <if test="stepCode != null"> and ast.step_code = #{stepCode}</if>
+            <if test="toolCode != null"> and ast.tool_code like concat('%', #{toolCode}, '%')</if>
+            <if test="status != null"> and ast.status = #{status}</if>
+        </where>
+        order by ast.id desc
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.AgentStep" useGeneratedKeys="true" keyProperty="id">
+        insert into agent_step
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="runId != null">run_id,</if>
+            <if test="stepOrder != null">step_order,</if>
+            <if test="stepCode != null">step_code,</if>
+            <if test="stepName != null">step_name,</if>
+            <if test="toolCode != null">tool_code,</if>
+            <if test="status != null">status,</if>
+            <if test="inputContent != null">input_content,</if>
+            <if test="outputContent != null">output_content,</if>
+            <if test="errorMessage != null">error_message,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="durationMs != null">duration_ms,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="runId != null">#{runId},</if>
+            <if test="stepOrder != null">#{stepOrder},</if>
+            <if test="stepCode != null">#{stepCode},</if>
+            <if test="stepName != null">#{stepName},</if>
+            <if test="toolCode != null">#{toolCode},</if>
+            <if test="status != null">#{status},</if>
+            <if test="inputContent != null">#{inputContent},</if>
+            <if test="outputContent != null">#{outputContent},</if>
+            <if test="errorMessage != null">#{errorMessage},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="durationMs != null">#{durationMs},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.AgentStep">
+        update agent_step
+        <set>
+            <if test="runId != null">run_id = #{runId},</if>
+            <if test="stepOrder != null">step_order = #{stepOrder},</if>
+            <if test="stepCode != null">step_code = #{stepCode},</if>
+            <if test="stepName != null">step_name = #{stepName},</if>
+            <if test="toolCode != null">tool_code = #{toolCode},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="inputContent != null">input_content = #{inputContent},</if>
+            <if test="outputContent != null">output_content = #{outputContent},</if>
+            <if test="errorMessage != null">error_message = #{errorMessage},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="durationMs != null">duration_ms = #{durationMs},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from agent_step
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByRunId">
+        delete from agent_step
+        where run_id = #{runId}
+    </delete>
+
+</mapper>

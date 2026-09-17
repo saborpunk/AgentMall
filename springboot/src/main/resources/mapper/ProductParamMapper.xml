@@ -1,0 +1,65 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ProductParamMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ProductParam">
+        select pp.*, p.name as product_name
+        from product_param pp
+        left join product p on pp.product_id = p.id
+        <where>
+            <if test="productId != null"> and pp.product_id = #{productId}</if>
+            <if test="productName != null"> and p.name like concat('%', #{productName}, '%')</if>
+            <if test="paramGroup != null"> and pp.param_group like concat('%', #{paramGroup}, '%')</if>
+            <if test="paramName != null"> and pp.param_name like concat('%', #{paramName}, '%')</if>
+            <if test="isCore != null"> and pp.is_core = #{isCore}</if>
+        </where>
+        order by pp.product_id desc, pp.sort asc, pp.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from product_param
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.ProductParam" useGeneratedKeys="true">
+        insert into product_param
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="paramGroup != null">param_group,</if>
+            <if test="paramName != null">param_name,</if>
+            <if test="paramValue != null">param_value,</if>
+            <if test="sort != null">sort,</if>
+            <if test="isCore != null">is_core,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="paramGroup != null">#{paramGroup},</if>
+            <if test="paramName != null">#{paramName},</if>
+            <if test="paramValue != null">#{paramValue},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="isCore != null">#{isCore},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.ProductParam">
+        update product_param
+        <set>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="paramGroup != null">param_group = #{paramGroup},</if>
+            <if test="paramName != null">param_name = #{paramName},</if>
+            <if test="paramValue != null">param_value = #{paramValue},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="isCore != null">is_core = #{isCore},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

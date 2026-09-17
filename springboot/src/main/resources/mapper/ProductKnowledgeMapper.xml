@@ -1,0 +1,70 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ProductKnowledgeMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ProductKnowledge">
+        select pk.*, p.name as product_name, p.product_no, p.cover_image
+        from product_knowledge pk
+        left join product p on pk.product_id = p.id
+        <where>
+            <if test="productId != null"> and pk.product_id = #{productId}</if>
+            <if test="knowledgeType != null"> and pk.knowledge_type = #{knowledgeType}</if>
+            <if test="sourceType != null"> and pk.source_type = #{sourceType}</if>
+            <if test="isEnabled != null"> and pk.is_enabled = #{isEnabled}</if>
+            <if test="title != null"> and pk.title like concat('%', #{title}, '%')</if>
+            <if test="content != null"> and pk.content like concat('%', #{content}, '%')</if>
+            <if test="productName != null"> and p.name like concat('%', #{productName}, '%')</if>
+        </where>
+        order by pk.sort asc, pk.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from product_knowledge
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.ProductKnowledge" useGeneratedKeys="true">
+        insert into product_knowledge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="knowledgeType != null">knowledge_type,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="sourceType != null">source_type,</if>
+            <if test="isEnabled != null">is_enabled,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="knowledgeType != null">#{knowledgeType},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="sourceType != null">#{sourceType},</if>
+            <if test="isEnabled != null">#{isEnabled},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.ProductKnowledge">
+        update product_knowledge
+        <set>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="knowledgeType != null">knowledge_type = #{knowledgeType},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="sourceType != null">source_type = #{sourceType},</if>
+            <if test="isEnabled != null">is_enabled = #{isEnabled},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

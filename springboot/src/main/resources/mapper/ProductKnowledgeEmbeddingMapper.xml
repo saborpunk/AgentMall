@@ -1,0 +1,76 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ProductKnowledgeEmbeddingMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ProductKnowledgeEmbedding">
+        select pke.*, p.name as product_name, p.product_no, pk.title as knowledge_title, pkc.chunk_title, pkc.chunk_content
+        from product_knowledge_embedding pke
+        left join product p on pke.product_id = p.id
+        left join product_knowledge pk on pke.knowledge_id = pk.id
+        left join product_knowledge_chunk pkc on pke.chunk_id = pkc.id
+        <where>
+            <if test="chunkId != null"> and pke.chunk_id = #{chunkId}</if>
+            <if test="knowledgeId != null"> and pke.knowledge_id = #{knowledgeId}</if>
+            <if test="productId != null"> and pke.product_id = #{productId}</if>
+            <if test="embeddingStatus != null"> and pke.embedding_status = #{embeddingStatus}</if>
+            <if test="productName != null"> and p.name like concat('%', #{productName}, '%')</if>
+            <if test="knowledgeTitle != null"> and pk.title like concat('%', #{knowledgeTitle}, '%')</if>
+            <if test="chunkTitle != null"> and pkc.chunk_title like concat('%', #{chunkTitle}, '%')</if>
+            <if test="chunkContent != null"> and pkc.chunk_content like concat('%', #{chunkContent}, '%')</if>
+        </where>
+        order by pke.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from product_knowledge_embedding
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByChunkId">
+        delete from product_knowledge_embedding
+        where chunk_id = #{chunkId}
+    </delete>
+
+    <delete id="deleteByKnowledgeId">
+        delete from product_knowledge_embedding
+        where knowledge_id = #{knowledgeId}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from product_knowledge_embedding
+        where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.ProductKnowledgeEmbedding" useGeneratedKeys="true">
+        insert into product_knowledge_embedding
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="chunkId != null">chunk_id,</if>
+            <if test="knowledgeId != null">knowledge_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="embeddingModel != null">embedding_model,</if>
+            <if test="vectorDimension != null">vector_dimension,</if>
+            <if test="vectorText != null">vector_text,</if>
+            <if test="embeddingStatus != null">embedding_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="chunkId != null">#{chunkId},</if>
+            <if test="knowledgeId != null">#{knowledgeId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="embeddingModel != null">#{embeddingModel},</if>
+            <if test="vectorDimension != null">#{vectorDimension},</if>
+            <if test="vectorText != null">#{vectorText},</if>
+            <if test="embeddingStatus != null">#{embeddingStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+</mapper>

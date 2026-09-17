@@ -1,0 +1,23 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java (Maven)
+target/
+*.class
+*.log
+
+# Node (Vue/Vite)
+node_modules/
+dist/
+npm-debug.log*
+
+# Env files
+*.local
+.env.*.local

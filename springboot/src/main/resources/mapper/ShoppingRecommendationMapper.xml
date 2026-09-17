@@ -1,0 +1,84 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ShoppingRecommendationMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ShoppingRecommendation">
+        select sr.*, sgt.task_no as task_no, ar.run_no as run_no, u.name as user_name
+        from shopping_recommendation sr
+        left join shopping_guide_task sgt on sr.task_id = sgt.id
+        left join agent_run ar on sr.run_id = ar.id
+        left join `user` u on sr.user_id = u.id
+        <where>
+            <if test="taskId != null"> and sr.task_id = #{taskId}</if>
+            <if test="taskNo != null"> and sgt.task_no like concat('%', #{taskNo}, '%')</if>
+            <if test="runId != null"> and sr.run_id = #{runId}</if>
+            <if test="runNo != null"> and ar.run_no like concat('%', #{runNo}, '%')</if>
+            <if test="userId != null"> and sr.user_id = #{userId}</if>
+            <if test="productId != null"> and sr.product_id = #{productId}</if>
+            <if test="productName != null"> and sr.product_name like concat('%', #{productName}, '%')</if>
+            <if test="status != null"> and sr.status = #{status}</if>
+        </where>
+        order by sr.task_id desc, sr.recommend_rank asc, sr.id desc
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.ShoppingRecommendation" useGeneratedKeys="true" keyProperty="id">
+        insert into shopping_recommendation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="runId != null">run_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productNo != null">product_no,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="productImage != null">product_image,</if>
+            <if test="priceSnapshot != null">price_snapshot,</if>
+            <if test="originalPriceSnapshot != null">original_price_snapshot,</if>
+            <if test="discountAmount != null">discount_amount,</if>
+            <if test="discountRate != null">discount_rate,</if>
+            <if test="availableQuantity != null">available_quantity,</if>
+            <if test="recommendRank != null">recommend_rank,</if>
+            <if test="recommendScore != null">recommend_score,</if>
+            <if test="recommendReason != null">recommend_reason,</if>
+            <if test="evidenceSummary != null">evidence_summary,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="runId != null">#{runId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productNo != null">#{productNo},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="productImage != null">#{productImage},</if>
+            <if test="priceSnapshot != null">#{priceSnapshot},</if>
+            <if test="originalPriceSnapshot != null">#{originalPriceSnapshot},</if>
+            <if test="discountAmount != null">#{discountAmount},</if>
+            <if test="discountRate != null">#{discountRate},</if>
+            <if test="availableQuantity != null">#{availableQuantity},</if>
+            <if test="recommendRank != null">#{recommendRank},</if>
+            <if test="recommendScore != null">#{recommendScore},</if>
+            <if test="recommendReason != null">#{recommendReason},</if>
+            <if test="evidenceSummary != null">#{evidenceSummary},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+
+    <delete id="deleteById">
+        delete from shopping_recommendation
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByTaskId">
+        delete from shopping_recommendation
+        where task_id = #{taskId}
+    </delete>
+
+</mapper>

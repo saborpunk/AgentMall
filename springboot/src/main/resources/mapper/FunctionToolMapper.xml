@@ -1,0 +1,78 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.FunctionToolMapper">
+
+    <select id="selectAll" resultType="com.example.entity.FunctionTool">
+        select * from function_tool
+        <where>
+            <if test="toolCode != null"> and tool_code like concat('%', #{toolCode}, '%')</if>
+            <if test="toolName != null"> and tool_name like concat('%', #{toolName}, '%')</if>
+            <if test="toolType != null"> and tool_type = #{toolType}</if>
+            <if test="invokeType != null"> and invoke_type = #{invokeType}</if>
+            <if test="isEnabled != null"> and is_enabled = #{isEnabled}</if>
+        </where>
+        order by sort asc, id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from function_tool
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.FunctionTool" useGeneratedKeys="true">
+        insert into function_tool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="toolCode != null">tool_code,</if>
+            <if test="toolName != null">tool_name,</if>
+            <if test="toolType != null">tool_type,</if>
+            <if test="invokeType != null">invoke_type,</if>
+            <if test="serviceBean != null">service_bean,</if>
+            <if test="serviceMethod != null">service_method,</if>
+            <if test="inputSchema != null">input_schema,</if>
+            <if test="outputSchema != null">output_schema,</if>
+            <if test="isEnabled != null">is_enabled,</if>
+            <if test="sort != null">sort,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="toolCode != null">#{toolCode},</if>
+            <if test="toolName != null">#{toolName},</if>
+            <if test="toolType != null">#{toolType},</if>
+            <if test="invokeType != null">#{invokeType},</if>
+            <if test="serviceBean != null">#{serviceBean},</if>
+            <if test="serviceMethod != null">#{serviceMethod},</if>
+            <if test="inputSchema != null">#{inputSchema},</if>
+            <if test="outputSchema != null">#{outputSchema},</if>
+            <if test="isEnabled != null">#{isEnabled},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.FunctionTool">
+        update function_tool
+        <set>
+            <if test="toolCode != null">tool_code = #{toolCode},</if>
+            <if test="toolName != null">tool_name = #{toolName},</if>
+            <if test="toolType != null">tool_type = #{toolType},</if>
+            <if test="invokeType != null">invoke_type = #{invokeType},</if>
+            <if test="serviceBean != null">service_bean = #{serviceBean},</if>
+            <if test="serviceMethod != null">service_method = #{serviceMethod},</if>
+            <if test="inputSchema != null">input_schema = #{inputSchema},</if>
+            <if test="outputSchema != null">output_schema = #{outputSchema},</if>
+            <if test="isEnabled != null">is_enabled = #{isEnabled},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

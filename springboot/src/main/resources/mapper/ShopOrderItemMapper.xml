@@ -1,0 +1,43 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ShopOrderItemMapper">
+
+    <select id="selectByOrderId" resultType="com.example.entity.ShopOrderItem">
+        select soi.*,
+               case when pr.id is null then 0 else 1 end as reviewed
+        from shop_order_item soi
+        left join product_review pr on soi.id = pr.order_item_id
+        where soi.order_id = #{orderId}
+        order by soi.id asc
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.ShopOrderItem" useGeneratedKeys="true">
+        insert into shop_order_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productNo != null">product_no,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="coverImage != null">cover_image,</if>
+            <if test="price != null">price,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="subtotalAmount != null">subtotal_amount,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productNo != null">#{productNo},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="coverImage != null">#{coverImage},</if>
+            <if test="price != null">#{price},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="subtotalAmount != null">#{subtotalAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+</mapper>

@@ -1,0 +1,42 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ProductFavoriteMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ProductFavorite">
+        select pf.*, p.name as product_name, p.product_no, p.cover_image, p.price, p.selling_point,
+               c.name as category_name, b.name as brand_name
+        from product_favorite pf
+        left join product p on pf.product_id = p.id
+        left join product_category c on p.category_id = c.id
+        left join product_brand b on p.brand_id = b.id
+        <where>
+            <if test="userId != null"> and pf.user_id = #{userId}</if>
+            <if test="productId != null"> and pf.product_id = #{productId}</if>
+            <if test="productName != null"> and p.name like concat('%', #{productName}, '%')</if>
+        </where>
+        order by pf.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from product_favorite
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.ProductFavorite" useGeneratedKeys="true">
+        insert into product_favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+</mapper>

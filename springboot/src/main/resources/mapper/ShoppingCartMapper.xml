@@ -1,0 +1,57 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ShoppingCartMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ShoppingCart">
+        <!-- 联商品表带出名称/编号/图片/价格/上架状态和库存，供购物车列表展示和下单前校验 -->
+        select sc.*, p.name as product_name, p.product_no, p.cover_image, p.price, p.status,
+               p.stock_quantity
+        from shopping_cart sc
+        left join product p on sc.product_id = p.id
+        <where>
+            <if test="userId != null"> and sc.user_id = #{userId}</if>
+            <if test="productId != null"> and sc.product_id = #{productId}</if>
+            <if test="productName != null"> and p.name like concat('%', #{productName}, '%')</if>
+        </where>
+        order by sc.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from shopping_cart
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.ShoppingCart" useGeneratedKeys="true">
+        insert into shopping_cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="selected != null">selected,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="selected != null">#{selected},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.ShoppingCart">
+        update shopping_cart
+        <set>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="selected != null">selected = #{selected},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

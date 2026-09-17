@@ -1,0 +1,81 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.AgentRunMapper">
+
+    <select id="selectAll" resultType="com.example.entity.AgentRun">
+        select ar.*, sgt.task_no as task_no, sgt.demand_text as demand_text, u.name as user_name
+        from agent_run ar
+        left join shopping_guide_task sgt on ar.task_id = sgt.id
+        left join `user` u on ar.user_id = u.id
+        <where>
+            <if test="runNo != null"> and ar.run_no like concat('%', #{runNo}, '%')</if>
+            <if test="taskId != null"> and ar.task_id = #{taskId}</if>
+            <if test="taskNo != null"> and sgt.task_no like concat('%', #{taskNo}, '%')</if>
+            <if test="userId != null"> and ar.user_id = #{userId}</if>
+            <if test="runType != null"> and ar.run_type = #{runType}</if>
+            <if test="status != null"> and ar.status = #{status}</if>
+        </where>
+        order by ar.id desc
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.AgentRun" useGeneratedKeys="true" keyProperty="id">
+        insert into agent_run
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="runNo != null">run_no,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="runType != null">run_type,</if>
+            <if test="status != null">status,</if>
+            <if test="inputSnapshot != null">input_snapshot,</if>
+            <if test="outputSummary != null">output_summary,</if>
+            <if test="errorMessage != null">error_message,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="durationMs != null">duration_ms,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="runNo != null">#{runNo},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="runType != null">#{runType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="inputSnapshot != null">#{inputSnapshot},</if>
+            <if test="outputSummary != null">#{outputSummary},</if>
+            <if test="errorMessage != null">#{errorMessage},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="durationMs != null">#{durationMs},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.AgentRun">
+        update agent_run
+        <set>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="runType != null">run_type = #{runType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="inputSnapshot != null">input_snapshot = #{inputSnapshot},</if>
+            <if test="outputSummary != null">output_summary = #{outputSummary},</if>
+            <if test="errorMessage != null">error_message = #{errorMessage},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="durationMs != null">duration_ms = #{durationMs},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from agent_run
+        where id = #{id}
+    </delete>
+
+</mapper>

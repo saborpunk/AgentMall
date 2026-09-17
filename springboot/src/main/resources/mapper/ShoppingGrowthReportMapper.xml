@@ -1,0 +1,69 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ShoppingGrowthReportMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ShoppingGrowthReport">
+        select *
+        from shopping_growth_report
+        <where>
+            <if test="reportNo != null"> and report_no like concat('%', #{reportNo}, '%')</if>
+            <if test="reportTitle != null"> and report_title like concat('%', #{reportTitle}, '%')</if>
+            <if test="reportType != null"> and report_type = #{reportType}</if>
+            <if test="status != null"> and status = #{status}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.ShoppingGrowthReport" useGeneratedKeys="true" keyProperty="id">
+        insert into shopping_growth_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportNo != null">report_no,</if>
+            <if test="reportTitle != null">report_title,</if>
+            <if test="reportType != null">report_type,</if>
+            <if test="orderCount != null">order_count,</if>
+            <if test="salesAmount != null">sales_amount,</if>
+            <if test="guideTaskCount != null">guide_task_count,</if>
+            <if test="guideDoneCount != null">guide_done_count,</if>
+            <if test="recommendationCount != null">recommendation_count,</if>
+            <if test="qaCount != null">qa_count,</if>
+            <if test="reviewAnalysisCount != null">review_analysis_count,</if>
+            <if test="conversionRate != null">conversion_rate,</if>
+            <if test="topProductSummary != null">top_product_summary,</if>
+            <if test="qaSummary != null">qa_summary,</if>
+            <if test="reviewSummary != null">review_summary,</if>
+            <if test="growthSuggestion != null">growth_suggestion,</if>
+            <if test="dataSnapshot != null">data_snapshot,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportNo != null">#{reportNo},</if>
+            <if test="reportTitle != null">#{reportTitle},</if>
+            <if test="reportType != null">#{reportType},</if>
+            <if test="orderCount != null">#{orderCount},</if>
+            <if test="salesAmount != null">#{salesAmount},</if>
+            <if test="guideTaskCount != null">#{guideTaskCount},</if>
+            <if test="guideDoneCount != null">#{guideDoneCount},</if>
+            <if test="recommendationCount != null">#{recommendationCount},</if>
+            <if test="qaCount != null">#{qaCount},</if>
+            <if test="reviewAnalysisCount != null">#{reviewAnalysisCount},</if>
+            <if test="conversionRate != null">#{conversionRate},</if>
+            <if test="topProductSummary != null">#{topProductSummary},</if>
+            <if test="qaSummary != null">#{qaSummary},</if>
+            <if test="reviewSummary != null">#{reviewSummary},</if>
+            <if test="growthSuggestion != null">#{growthSuggestion},</if>
+            <if test="dataSnapshot != null">#{dataSnapshot},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById">
+        delete from shopping_growth_report
+        where id = #{id}
+    </delete>
+
+</mapper>

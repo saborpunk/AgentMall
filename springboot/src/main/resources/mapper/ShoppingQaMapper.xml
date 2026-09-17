@@ -1,0 +1,65 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ShoppingQaMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ShoppingQa">
+        select sq.*, u.name as user_name
+        from shopping_qa sq
+        left join `user` u on sq.user_id = u.id
+        <where>
+            <if test="qaNo != null"> and sq.qa_no like concat('%', #{qaNo}, '%')</if>
+            <if test="userId != null"> and sq.user_id = #{userId}</if>
+            <if test="questionType != null"> and sq.question_type = #{questionType}</if>
+            <if test="questionText != null"> and sq.question_text like concat('%', #{questionText}, '%')</if>
+            <if test="productName != null"> and sq.product_name like concat('%', #{productName}, '%')</if>
+            <if test="orderNo != null"> and sq.order_no like concat('%', #{orderNo}, '%')</if>
+            <if test="status != null"> and sq.status = #{status}</if>
+        </where>
+        order by sq.id desc
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.ShoppingQa" useGeneratedKeys="true" keyProperty="id">
+        insert into shopping_qa
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="qaNo != null">qa_no,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="questionType != null">question_type,</if>
+            <if test="questionText != null">question_text,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="answerText != null">answer_text,</if>
+            <if test="evidenceContent != null">evidence_content,</if>
+            <if test="toolTrace != null">tool_trace,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="qaNo != null">#{qaNo},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="questionType != null">#{questionType},</if>
+            <if test="questionText != null">#{questionText},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="answerText != null">#{answerText},</if>
+            <if test="evidenceContent != null">#{evidenceContent},</if>
+            <if test="toolTrace != null">#{toolTrace},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById">
+        delete from shopping_qa
+        where id = #{id}
+    </delete>
+
+</mapper>

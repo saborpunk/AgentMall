@@ -1,0 +1,74 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ShoppingReviewAnalysisMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ShoppingReviewAnalysis">
+        select sra.*, p.product_no, p.cover_image
+        from shopping_review_analysis sra
+        left join product p on sra.product_id = p.id
+        <where>
+            <if test="analysisNo != null"> and sra.analysis_no like concat('%', #{analysisNo}, '%')</if>
+            <if test="productId != null"> and sra.product_id = #{productId}</if>
+            <if test="productName != null"> and sra.product_name like concat('%', #{productName}, '%')</if>
+            <if test="sentimentLevel != null"> and sra.sentiment_level = #{sentimentLevel}</if>
+            <if test="status != null"> and sra.status = #{status}</if>
+        </where>
+        order by sra.id desc
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.ShoppingReviewAnalysis" useGeneratedKeys="true" keyProperty="id">
+        insert into shopping_review_analysis
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="analysisNo != null">analysis_no,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="reviewCount != null">review_count,</if>
+            <if test="averageRating != null">average_rating,</if>
+            <if test="positiveCount != null">positive_count,</if>
+            <if test="neutralCount != null">neutral_count,</if>
+            <if test="negativeCount != null">negative_count,</if>
+            <if test="positiveRate != null">positive_rate,</if>
+            <if test="sentimentLevel != null">sentiment_level,</if>
+            <if test="advantageSummary != null">advantage_summary,</if>
+            <if test="problemSummary != null">problem_summary,</if>
+            <if test="keywordSummary != null">keyword_summary,</if>
+            <if test="improvementSuggestion != null">improvement_suggestion,</if>
+            <if test="sampleReviews != null">sample_reviews,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="analysisNo != null">#{analysisNo},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="reviewCount != null">#{reviewCount},</if>
+            <if test="averageRating != null">#{averageRating},</if>
+            <if test="positiveCount != null">#{positiveCount},</if>
+            <if test="neutralCount != null">#{neutralCount},</if>
+            <if test="negativeCount != null">#{negativeCount},</if>
+            <if test="positiveRate != null">#{positiveRate},</if>
+            <if test="sentimentLevel != null">#{sentimentLevel},</if>
+            <if test="advantageSummary != null">#{advantageSummary},</if>
+            <if test="problemSummary != null">#{problemSummary},</if>
+            <if test="keywordSummary != null">#{keywordSummary},</if>
+            <if test="improvementSuggestion != null">#{improvementSuggestion},</if>
+            <if test="sampleReviews != null">#{sampleReviews},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById">
+        delete from shopping_review_analysis
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByProductId">
+        delete from shopping_review_analysis
+        where product_id = #{productId}
+    </delete>
+
+</mapper>

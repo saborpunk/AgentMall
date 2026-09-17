@@ -1,0 +1,59 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.UserAddressMapper">
+
+    <delete id="deleteById">
+        delete from user_address
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.UserAddress" useGeneratedKeys="true">
+        insert into user_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="receiverName != null">receiver_name,</if>
+            <if test="receiverPhone != null">receiver_phone,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="district != null">district,</if>
+            <if test="detailAddress != null">detail_address,</if>
+            <if test="postalCode != null">postal_code,</if>
+            <if test="isDefault != null">is_default,</if>
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="receiverName != null">#{receiverName},</if>
+            <if test="receiverPhone != null">#{receiverPhone},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="district != null">#{district},</if>
+            <if test="detailAddress != null">#{detailAddress},</if>
+            <if test="postalCode != null">#{postalCode},</if>
+            <if test="isDefault != null">#{isDefault},</if>
+            now(),
+            now(),
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.UserAddress">
+        update user_address
+        <set>
+            <if test="receiverName != null">receiver_name = #{receiverName},</if>
+            <if test="receiverPhone != null">receiver_phone = #{receiverPhone},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="district != null">district = #{district},</if>
+            <if test="detailAddress != null">detail_address = #{detailAddress},</if>
+            <if test="postalCode != null">postal_code = #{postalCode},</if>
+            <if test="isDefault != null">is_default = #{isDefault},</if>
+            update_time = now(),
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

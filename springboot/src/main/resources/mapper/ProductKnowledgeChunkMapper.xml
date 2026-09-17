@@ -1,0 +1,73 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ProductKnowledgeChunkMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ProductKnowledgeChunk">
+        select pkc.*, p.name as product_name, p.product_no, pk.title as knowledge_title, pk.source_type
+        from product_knowledge_chunk pkc
+        left join product p on pkc.product_id = p.id
+        left join product_knowledge pk on pkc.knowledge_id = pk.id
+        <where>
+            <if test="id != null"> and pkc.id = #{id}</if>
+            <if test="knowledgeId != null"> and pkc.knowledge_id = #{knowledgeId}</if>
+            <if test="productId != null"> and pkc.product_id = #{productId}</if>
+            <if test="knowledgeType != null"> and pkc.knowledge_type = #{knowledgeType}</if>
+            <if test="chunkStatus != null"> and pkc.chunk_status = #{chunkStatus}</if>
+            <if test="chunkTitle != null"> and pkc.chunk_title like concat('%', #{chunkTitle}, '%')</if>
+            <if test="chunkContent != null"> and pkc.chunk_content like concat('%', #{chunkContent}, '%')</if>
+            <if test="productName != null"> and p.name like concat('%', #{productName}, '%')</if>
+            <if test="knowledgeTitle != null"> and pk.title like concat('%', #{knowledgeTitle}, '%')</if>
+        </where>
+        order by pkc.product_id asc, pkc.knowledge_id asc, pkc.chunk_no asc
+    </select>
+
+    <delete id="deleteById">
+        delete from product_knowledge_chunk
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByKnowledgeId">
+        delete from product_knowledge_chunk
+        where knowledge_id = #{knowledgeId}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from product_knowledge_chunk
+        where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.ProductKnowledgeChunk" useGeneratedKeys="true">
+        insert into product_knowledge_chunk
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="knowledgeId != null">knowledge_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="knowledgeType != null">knowledge_type,</if>
+            <if test="chunkNo != null">chunk_no,</if>
+            <if test="chunkTitle != null">chunk_title,</if>
+            <if test="chunkContent != null">chunk_content,</if>
+            <if test="characterCount != null">character_count,</if>
+            <if test="chunkStatus != null">chunk_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="knowledgeId != null">#{knowledgeId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="knowledgeType != null">#{knowledgeType},</if>
+            <if test="chunkNo != null">#{chunkNo},</if>
+            <if test="chunkTitle != null">#{chunkTitle},</if>
+            <if test="chunkContent != null">#{chunkContent},</if>
+            <if test="characterCount != null">#{characterCount},</if>
+            <if test="chunkStatus != null">#{chunkStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+</mapper>

@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ProductBrandMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ProductBrand">
+        select * from product_brand
+        <where>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+            <if test="isEnabled != null"> and is_enabled = #{isEnabled}</if>
+        </where>
+        order by sort asc, id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from product_brand
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.ProductBrand" useGeneratedKeys="true">
+        insert into product_brand
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="logo != null">logo,</if>
+            <if test="officialSite != null">official_site,</if>
+            <if test="sort != null">sort,</if>
+            <if test="isEnabled != null">is_enabled,</if>
+            <if test="description != null">description,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="logo != null">#{logo},</if>
+            <if test="officialSite != null">#{officialSite},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="isEnabled != null">#{isEnabled},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.ProductBrand">
+        update product_brand
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="logo != null">logo = #{logo},</if>
+            <if test="officialSite != null">official_site = #{officialSite},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="isEnabled != null">is_enabled = #{isEnabled},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,77 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.AfterSaleRuleMapper">
+
+    <select id="selectAll" resultType="com.example.entity.AfterSaleRule">
+        select asr.*, pc.name as category_name
+        from after_sale_rule asr
+        left join product_category pc on asr.category_id = pc.id
+        <where>
+            <if test="ruleName != null"> and asr.rule_name like concat('%', #{ruleName}, '%')</if>
+            <if test="ruleType != null"> and asr.rule_type = #{ruleType}</if>
+            <if test="categoryId != null"> and asr.category_id = #{categoryId}</if>
+            <if test="isEnabled != null"> and asr.is_enabled = #{isEnabled}</if>
+            <if test="applyScene != null"> and asr.apply_scene like concat('%', #{applyScene}, '%')</if>
+        </where>
+        order by asr.sort asc, asr.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from after_sale_rule
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.AfterSaleRule" useGeneratedKeys="true">
+        insert into after_sale_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="ruleName != null">rule_name,</if>
+            <if test="ruleType != null">rule_type,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="applyScene != null">apply_scene,</if>
+            <if test="conditionText != null">condition_text,</if>
+            <if test="processText != null">process_text,</if>
+            <if test="timeLimit != null">time_limit,</if>
+            <if test="contactChannel != null">contact_channel,</if>
+            <if test="isEnabled != null">is_enabled,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="ruleName != null">#{ruleName},</if>
+            <if test="ruleType != null">#{ruleType},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="applyScene != null">#{applyScene},</if>
+            <if test="conditionText != null">#{conditionText},</if>
+            <if test="processText != null">#{processText},</if>
+            <if test="timeLimit != null">#{timeLimit},</if>
+            <if test="contactChannel != null">#{contactChannel},</if>
+            <if test="isEnabled != null">#{isEnabled},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.AfterSaleRule">
+        update after_sale_rule
+        <set>
+            <if test="ruleName != null">rule_name = #{ruleName},</if>
+            <if test="ruleType != null">rule_type = #{ruleType},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="applyScene != null">apply_scene = #{applyScene},</if>
+            <if test="conditionText != null">condition_text = #{conditionText},</if>
+            <if test="processText != null">process_text = #{processText},</if>
+            <if test="timeLimit != null">time_limit = #{timeLimit},</if>
+            <if test="contactChannel != null">contact_channel = #{contactChannel},</if>
+            <if test="isEnabled != null">is_enabled = #{isEnabled},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

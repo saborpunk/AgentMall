@@ -1,0 +1,79 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ShopOrderMapper">
+
+    <select id="selectAll" resultType="com.example.entity.ShopOrder">
+        select so.*, u.name as user_name
+        from shop_order so
+        left join `user` u on so.user_id = u.id
+        <where>
+            <if test="orderNo != null"> and so.order_no like concat('%', #{orderNo}, '%')</if>
+            <if test="userId != null"> and so.user_id = #{userId}</if>
+            <if test="status != null"> and so.status = #{status}</if>
+            <if test="receiverName != null"> and so.receiver_name like concat('%', #{receiverName}, '%')</if>
+            <if test="receiverPhone != null"> and so.receiver_phone like concat('%', #{receiverPhone}, '%')</if>
+        </where>
+        order by so.id desc
+    </select>
+
+    <!-- keyProperty="id" 让 MySQL 自增出来的订单 ID 回填到入参对象上。
+         下单后紧接着要按 order.getId() 写 shop_order_item.order_id，
+         不回填的话拿到的是 null，订单明细会因为 order_id 没有默认值而插入失败。 -->
+    <insert id="insert" parameterType="com.example.entity.ShopOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into shop_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="totalAmount != null">total_amount,</if>
+            <if test="totalQuantity != null">total_quantity,</if>
+            <if test="status != null">status,</if>
+            <if test="receiverName != null">receiver_name,</if>
+            <if test="receiverPhone != null">receiver_phone,</if>
+            <if test="receiverAddress != null">receiver_address,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="shipTime != null">ship_time,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="cancelTime != null">cancel_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="totalQuantity != null">#{totalQuantity},</if>
+            <if test="status != null">#{status},</if>
+            <if test="receiverName != null">#{receiverName},</if>
+            <if test="receiverPhone != null">#{receiverPhone},</if>
+            <if test="receiverAddress != null">#{receiverAddress},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="shipTime != null">#{shipTime},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="cancelTime != null">#{cancelTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.ShopOrder">
+        update shop_order
+        <set>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="totalQuantity != null">total_quantity = #{totalQuantity},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="receiverName != null">receiver_name = #{receiverName},</if>
+            <if test="receiverPhone != null">receiver_phone = #{receiverPhone},</if>
+            <if test="receiverAddress != null">receiver_address = #{receiverAddress},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="shipTime != null">ship_time = #{shipTime},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
