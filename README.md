@@ -17,6 +17,52 @@
 | AI 管理与调试 | 对话/向量模型配置、Prompt 模板、Function Tool 管理、商品与业务工具调试 |
 | 运行追踪 | Agent Run 运行记录、Agent Step 执行步骤、推荐结果与证据查看 |
 
+## 界面预览
+
+以下为项目界面截图，展示用户商城、AI 导购与管理后台的主要功能。
+
+### 登录页面
+
+登录入口与智能购物助手介绍。
+
+![登录页面](docs/screenshots/login.png)
+
+### 商城首页
+
+商品分类、品牌筛选、搜索与商品列表。
+
+![商城首页](docs/screenshots/storefront.png)
+
+### AI 智能导购
+
+输入购物需求和预算，查看推荐商品、推荐理由与匹配结果。
+
+![AI 智能导购](docs/screenshots/ai-shopping-guide.png)
+
+### 商品详情与 AI 问答
+
+展示商品价格、库存和参数，并结合知识库资料回答商品问题。
+
+![商品详情与 AI 问答](docs/screenshots/product-qa.png)
+
+### 后台商品管理
+
+维护商品信息、价格、库存、推荐状态与上架状态。
+
+![后台商品管理](docs/screenshots/product-management.png)
+
+### Function Tool 工具中心
+
+查看与维护业务工具的编码、调用方式、Service Bean 和启用状态。
+
+![Function Tool 工具中心](docs/screenshots/function-tools.png)
+
+### Embedding 检索
+
+生成知识向量，检索相关商品资料并查看相似度结果。
+
+![Embedding 检索](docs/screenshots/embedding-search.png)
+
 ## 技术栈
 
 - **前端**：Vue 3、Vite 5、Vue Router 4、Element Plus、Axios、Sass、Marked。
